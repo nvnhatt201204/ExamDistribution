@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Staff;
-import com.example.demo.repositories.StaffRepository;
+import com.example.demo.entities.*;
+import com.example.demo.repositories.*;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -24,7 +24,27 @@ public class StaffController {
     private final StaffRepository staffRepository;
 
 
+//    @Autowired
+//    private FacilityRepository facilityRepository;
+//
+//    @Autowired
+//    private DepartmentRepository departmentRepository;
+//
+//    @Autowired
+//    private DepartmentFacilityRepository departmentFacilityRepository;
+//
+//    @Autowired
+//    private MajorRepository majorRepository;
+//
+//    @Autowired
+//    private MajorFacilityRepository majorFacilityRepository;
+//
+//    @Autowired
+//    private StaffMajorFacilityRepository staffMajorFacilityRepository;
 
+
+
+// CÂU 1 -> 3
     @Autowired
     public StaffController(StaffRepository staffRepository) {
         this.staffRepository = staffRepository;
@@ -78,7 +98,8 @@ public class StaffController {
     }
 
     @PostMapping("/update")
-    public String updateStaff(@PathVariable("id") UUID id, @ModelAttribute Staff staff, BindingResult result, Model model) {
+    public String updateStaff( @ModelAttribute Staff staff, BindingResult result, Model model) {
+        UUID id = staff.getId();
         if (result.hasErrors()) {
             return "staffs/edit";
         }
@@ -115,4 +136,28 @@ public class StaffController {
         staffRepository.delete(staff);
         return "redirect:/staffs/list";
     }
+
+//HẾT CÂU 1 -> 3
+
+
+//    @PostMapping("/updateDepartments")
+//    @ResponseBody
+//    public List<Department> updateDepartments(@RequestParam("facilityId") UUID facilityId) {
+//        List<DepartmentFacility> departmentFacilities = departmentFacilityRepository.findByFacilityId(facilityId);
+//        List<Department> departments = departmentFacilities.stream()
+//                .map(DepartmentFacility::getDepartment)
+//                .collect(Collectors.toList());
+//        return departments;
+//    }
+//
+//    @PostMapping("/updateMajors")
+//    @ResponseBody
+//    public List<Major> updateMajors(@RequestParam("departmentFacilityId") UUID departmentFacilityId) {
+//        List<MajorFacility> majorFacilities = majorFacilityRepository.findByDepartmentFacilityId(departmentFacilityId);
+//        List<Major> majors = majorFacilities.stream()
+//                .map(MajorFacility::getMajor)
+//                .collect(Collectors.toList());
+//        return majors;
+//    }
+
 }
